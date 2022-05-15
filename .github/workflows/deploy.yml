@@ -13,15 +13,15 @@ jobs:
     steps:
       - name: SSH into VPS and docker-compose with organisation secrets
         uses: appleboy/ssh-action@master
-        env:
-          MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
-          MONGO_USERNAME: ${{ secrets.MONGO_USERNAME }}
-          REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
         with:
           host: ${{ secrets.VPS_PUBLIC_IP_ADDRESS }}
           username: root
           password: ${{ secrets.VPS_PASSWORD }}
           script_stop: true
           script: |
+            export MONGO_PASSWORD="${{ secrets.MONGO_PASSWORD }}"
+            export MONGO_USERNAME="${{ secrets.MONGO_USERNAME }}"
+            export REDIS_PASSWORD="${{ secrets.REDIS_PASSWORD }}"
             cd database-setup/
+            git pull
             sh compose.sh
