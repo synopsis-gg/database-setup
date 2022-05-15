@@ -1,1 +1,1 @@
-docker-compose -p databases down
+docker compose -p databases down

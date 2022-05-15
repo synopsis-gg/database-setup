@@ -1,1 +1,1 @@
-docker-compose -p databases up -d
+docker compose -p databases up -d
