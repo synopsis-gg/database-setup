@@ -21,7 +21,9 @@ jobs:
           host: ${{ secrets.VPS_PUBLIC_IP_ADDRESS }}
           username: root
           password: ${{ secrets.VPS_PASSWORD }}
+          envs: MONGO_PASSWORD,MONGO_USERNAME,REDIS_PASSWORD
           script_stop: true
           script: |
             cd database-setup/
+            git pull
             sh compose.sh
