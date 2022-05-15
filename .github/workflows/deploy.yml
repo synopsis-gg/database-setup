@@ -1,0 +1,27 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ main ]
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: SSH into VPS and docker-compose with organisation secrets
+        uses: appleboy/ssh-action@master
+        env:
+          MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
+          MONGO_USERNAME: ${{ secrets.MONGO_USERNAME }}
+          REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
+        with:
+          host: ${{ secrets.VPS_PUBLIC_IP_ADDRESS }}
+          username: root
+          password: ${{ secrets.VPS_PASSWORD }}
+          script_stop: true
+          script: |
+            cd database-setup/
+            sh compose.sh
