@@ -1,0 +1,27 @@
+services:
+  mongo: 
+    image: mongo:5
+    container_name: mongo
+    restart: on-failure:2
+    ports: 
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME?err}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD?err}
+      - SERVER_PUBLIC_IP_ADDRESS=${SERVER_PUBLIC_IP_ADDRESS?err}
+    volumes:
+      - ~/db/mongo:/data/db
+    command: "mongod --bind_ip '0.0.0.0'"
+
+  redis: 
+    image: redis:7
+    container_name: redis
+    restart: on-failure:2
+    ports: 
+      - 6379:6379
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD?err}
+      - SERVER_PUBLIC_IP_ADDRESS=${SERVER_PUBLIC_IP_ADDRESS?err}
+    volumes:
+      - ~/db/redis:/data/
+    command: "redis-server --requirepass $REDIS_PASSWORD --bind '0.0.0.0'"
