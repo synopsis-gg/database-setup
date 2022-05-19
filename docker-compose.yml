@@ -1,9 +1,9 @@
 services:
-  mongo: 
+  mongo:
     image: mongo:5
     container_name: mongo
     restart: on-failure:2
-    ports: 
+    ports:
       - 27017:27017
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME?err}
@@ -12,14 +12,19 @@ services:
       - ~/db/mongo:/data/db
     command: "mongod --bind_ip '0.0.0.0'"
 
-  redis: 
+  redis:
     image: redis:7
     container_name: redis
     restart: on-failure:2
-    ports: 
+    ports:
       - 6379:6379
     environment:
       - REDIS_PASSWORD=${REDIS_PASSWORD?err}
     volumes:
       - ~/db/redis:/data/
     command: "redis-server --requirepass $REDIS_PASSWORD --bind '0.0.0.0'"
+
+networks:
+  default:
+    external:
+      name: synopsis-network
